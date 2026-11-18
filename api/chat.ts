@@ -3,7 +3,7 @@
 // returns 503 and the browser falls back to its offline answer engine.
 
 import Anthropic from "@anthropic-ai/sdk";
-import { buildDossier } from "../src/data/knowledge";
+import { buildDossier } from "../src/data/knowledge.js"; // .js: Vercel runs this as Node ESM, which needs extensions
 
 declare const process: { env: Record<string, string | undefined> };
 

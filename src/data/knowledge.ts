@@ -13,8 +13,8 @@ import {
   strengths,
   RESUME_URL,
   SITE_URL,
-} from "./profile";
-import { GITHUB_SNAPSHOT, repos } from "./github";
+} from "./profile.js";
+import { GITHUB_SNAPSHOT, repos } from "./github.js";
 
 export type Fact = { text: string; source: string; topic: string };
 
