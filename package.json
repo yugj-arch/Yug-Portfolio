@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "eval:bot": "node scripts/run-ts.mjs scripts/bot-eval.ts"
+    "eval:bot": "node scripts/run-ts.mjs scripts/bot-eval.ts",
+    "ship": "node scripts/ship.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.10.0",
