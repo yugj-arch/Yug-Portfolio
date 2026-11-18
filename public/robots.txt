@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yug-portfolio-rosy.vercel.app/sitemap.xml

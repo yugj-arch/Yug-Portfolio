@@ -25,7 +25,7 @@ const WhatIDo = () => {
     };
   }, []);
   return (
-    <div className="whatIDO">
+    <div className="whatIDO" id="whatido">
       <div className="what-box">
         <h2 className="title">
           W<span className="hat-h2">HAT</span>
@@ -87,23 +87,25 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>AI & MACHINE LEARNING</h3>
-              <h4>Intelligent Systems & Analysis</h4>
+              <h3>FULL-STACK WEB</h3>
+              <h4>Client websites, end to end</h4>
               <p>
-                Designing predictive models and AI-driven applications. From analyzing
-                complex datasets to deploying smart solutions like fraud detection
-                systems and intelligent analyzers using Python.
+                At DotSyndicate I turn client requirements into shipped Next.js and
+                React sites: Firebase auth, Firestore sync and media, lead-capture
+                forms, responsive layouts and fast mobile images.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Python</div>
-                <div className="what-tags">PyTorch</div>
-                <div className="what-tags">Scikit-learn</div>
-                <div className="what-tags">Pandas</div>
-                <div className="what-tags">NumPy</div>
-                <div className="what-tags">Deep Learning</div>
-                <div className="what-tags">NLP & CV</div>
-                <div className="what-tags">Data Analysis</div>
+                <div className="what-tags">Next.js</div>
+                <div className="what-tags">React</div>
+                <div className="what-tags">TypeScript</div>
+                <div className="what-tags">Node.js</div>
+                <div className="what-tags">Firebase / Firestore</div>
+                <div className="what-tags">Supabase</div>
+                <div className="what-tags">Tailwind CSS</div>
+                <div className="what-tags">shadcn/ui</div>
+                <div className="what-tags">Three.js</div>
+                <div className="what-tags">GSAP</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -127,22 +129,24 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>SOFTWARE ENGINEERING</h3>
-              <h4>Algorithmic Problem Solving</h4>
+              <h3>AI & ML ENGINEERING</h3>
+              <h4>OCR, transliteration, models</h4>
               <p>
-                Writing clean, optimized, and efficient code in C++ and Python.
-                Deeply focused on Data Structures and Algorithms to tackle
-                complex logical challenges and build scalable architecture.
+                Built Urdu Toolkit: OCR and AI engines running in parallel behind
+                a plugin registry, plus a self-trained character-level Transformer,
+                tested with pytest and a CER/WER gate in CI.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">C++</div>
                 <div className="what-tags">Python</div>
-                <div className="what-tags">Data Structures</div>
-                <div className="what-tags">Algorithms</div>
-                <div className="what-tags">Object-Oriented Programming</div>
-                <div className="what-tags">System Design</div>
-                <div className="what-tags">Problem Solving</div>
+                <div className="what-tags">PyTorch</div>
+                <div className="what-tags">Transformers</div>
+                <div className="what-tags">PaddleOCR</div>
+                <div className="what-tags">EasyOCR</div>
+                <div className="what-tags">OpenAI / Gemini APIs</div>
+                <div className="what-tags">Flask</div>
+                <div className="what-tags">pytest</div>
+                <div className="what-tags">Docker</div>
               </div>
               <div className="what-arrow"></div>
             </div>

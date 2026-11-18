@@ -7,9 +7,11 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "eval:bot": "node scripts/run-ts.mjs scripts/bot-eval.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.10.0",
     "@gsap/react": "^2.1.1",
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^9.120.4",

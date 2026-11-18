@@ -4,11 +4,14 @@ import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import "./styles/Navbar.css";
+import { profile } from "../data/profile";
+import { useExperience } from "../context/ExperienceProvider";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 export let smoother: ScrollSmoother;
 
 const Navbar = () => {
+  const { open } = useExperience();
   useEffect(() => {
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
@@ -23,7 +26,7 @@ const Navbar = () => {
     smoother.scrollTop(0);
     smoother.paused(true);
 
-    let links = document.querySelectorAll(".header ul a");
+    let links = document.querySelectorAll(".header ul a[data-href]");
     links.forEach((elem) => {
       let element = elem as HTMLAnchorElement;
       element.addEventListener("click", (e) => {
@@ -45,12 +48,23 @@ const Navbar = () => {
         <a href="/#" className="navbar-title" data-cursor="disable">
           YJ
         </a>
+        <button
+          type="button"
+          className="navbar-mode"
+          data-magnetic
+          onClick={() => open("recruiter")}
+          data-cursor="disable"
+          title="Fast, one-page view for recruiters"
+        >
+          <span className="navbar-mode-dot" aria-hidden="true" />
+          RECRUITER MODE
+        </button>
         <a
-          href="mailto:yug.18175@sakec.ac.in"
+          href={`mailto:${profile.email}`}
           className="navbar-connect"
           data-cursor="disable"
         >
-          yug.18175@sakec.ac.in
+          {profile.email}
         </a>
         <ul>
           <li>

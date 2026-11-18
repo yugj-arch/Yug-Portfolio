@@ -1,53 +1,61 @@
 import "./styles/Career.css";
+import { education, experience, simulations } from "../data/profile";
 
 const Career = () => {
   return (
-    <div className="career-section section-container">
+    <div className="career-section section-container" id="career">
       <div className="career-container">
         <h2>
-          Certifications <span>&</span>
-          <br /> Activities
+          Experience <span>&</span>
+          <br /> Learning
         </h2>
         <div className="career-info">
           <div className="career-timeline">
             <div className="career-dot"></div>
           </div>
+          {experience.map((job) => (
+            <div className="career-info-box" key={job.role}>
+              <div className="career-info-in">
+                <div className="career-role">
+                  <h4>{job.role}</h4>
+                  <h5>
+                    {job.org} · {job.period}
+                  </h5>
+                </div>
+                <h3>NOW</h3>
+              </div>
+              <p>
+                Ship client websites end to end with Next.js, React and Node.js; integrated Firebase
+                Authentication, Firestore and Storage; review teammates&apos; code, test across devices and
+                deploy to production while working directly with stakeholders.
+              </p>
+            </div>
+          ))}
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Google AI-ML Virtual Internship</h4>
-                <h5>EduSkills Foundation</h5>
+                <h4>B.Tech, Electronics & Computer Science</h4>
+                <h5>{education.school}</h5>
               </div>
-              <h3>2025</h3>
+              <h3>2027</h3>
             </div>
             <p>
-              Gained hands-on experience utilizing Google Cloud services to deploy TensorFlow models. Applied principles of Responsible AI and mastered core deep learning concepts.
+              CGPA {education.cgpa}, {education.period.toLowerCase()}. Core CS: data structures and algorithms,
+              OOP, debugging, code review, unit testing and REST API design.
             </p>
           </div>
-          <div className="career-info-box">
-            <div className="career-info-in">
-              <div className="career-role">
-                <h4>TCS iON Career Edge</h4>
-                <h5>Tata Consultancy Services</h5>
+          {simulations.map((s) => (
+            <div className="career-info-box" key={s.title}>
+              <div className="career-info-in">
+                <div className="career-role">
+                  <h4>{s.title}</h4>
+                  <h5>{s.org}</h5>
+                </div>
+                <h3>{s.year}</h3>
               </div>
-              <h3>2025</h3>
+              <p>Completed {s.org.replace(" (Forage)", "")}&apos;s virtual job simulation on Forage.</p>
             </div>
-            <p>
-              Cultivated professional communication skills, demonstrated proficiency in modern digital tools, and implemented structured problem-solving frameworks for long-term career growth.
-            </p>
-          </div>
-          <div className="career-info-box">
-            <div className="career-info-in">
-              <div className="career-role">
-                <h4>Data Analytics Job Simulation</h4>
-                <h5>Deloitte / Forage</h5>
-              </div>
-              <h3>2025</h3>
-            </div>
-            <p>
-              Executed end-to-end data analysis workflows including defining KPIs. Designed professional visualizations to effectively communicate complex analytical findings and strategic recommendations.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </div>

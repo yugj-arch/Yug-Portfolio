@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "geist",
+        "createdAt": "2026-11-18T07:25:50.769Z",
+        "reason": "agent decision: Geist is the site's existing typeface (src/index.css, from the original template); recruiter view reuses it for consistency"
+      }
+    ]
+  }
+}

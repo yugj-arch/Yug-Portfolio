@@ -53,7 +53,8 @@
 
 .carousel-slide {
   min-width: 100%;
-  flex-shrink: 0;
+  max-width: 100%;
+  flex: 0 0 100%;
   box-sizing: border-box;
   padding: 50px 0;
 }
@@ -347,4 +348,54 @@
   .work-image img {
     max-height: 250px;
   }
+}
+/* ── Project summary + actions ── */
+.carousel-summary {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #c9cfda;
+  font-weight: 300;
+}
+
+.carousel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.carousel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #eae5ec;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.carousel-cta:hover,
+.carousel-cta:focus-visible {
+  border-color: var(--accentColor);
+  color: #eae5ec;
+  outline: none;
+}
+
+.carousel-cta-primary {
+  background: var(--accentColor);
+  border-color: var(--accentColor);
+  color: #04110f;
+}
+
+.carousel-cta-primary:hover,
+.carousel-cta-primary:focus-visible {
+  color: #04110f;
+  transform: translateY(-1px);
 }

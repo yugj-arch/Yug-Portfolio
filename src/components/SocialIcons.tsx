@@ -1,8 +1,9 @@
 import {
   FaGithub,
   FaLinkedinIn,
+  FaWhatsapp,
 } from "react-icons/fa6";
-import { SiLeetcode } from "react-icons/si";
+import { profile, RESUME_URL } from "../data/profile";
 import "./styles/SocialIcons.css";
 import { TbNotes } from "react-icons/tb";
 import { useEffect } from "react";
@@ -59,22 +60,28 @@ const SocialIcons = () => {
     <div className="icons-section">
       <div className="social-icons" data-cursor="icons" id="social">
         <span>
-          <a href="https://github.com/yug-max" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+          <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
             <FaGithub />
           </a>
         </span>
         <span>
-          <a href="https://www.linkedin.com/in/yug-jain-b74556341" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
             <FaLinkedinIn />
           </a>
         </span>
         <span>
-          <a href="https://leetcode.com/u/klE0Sy0ASB/" target="_blank" rel="noopener noreferrer" aria-label="LeetCode" title="LeetCode">
-            <SiLeetcode />
+          <a href={profile.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp">
+            <FaWhatsapp />
           </a>
         </span>
       </div>
-      <a className="resume-button" href="#" aria-label="Resume" title="Resume">
+      <a
+        className="resume-button"
+        href={RESUME_URL}
+        download="Yug_Jain_Resume.pdf"
+        aria-label="Download resume (PDF)"
+        title="Download resume (PDF)"
+      >
         <HoverLinks text="RESUME" />
         <span>
           <TbNotes />
