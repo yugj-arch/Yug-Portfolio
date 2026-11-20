@@ -3,6 +3,7 @@ import { useExperience } from "../../context/ExperienceProvider";
 import { useKonami } from "../../hooks/useKonami";
 import Dock from "./Dock";
 import Secrets from "./Secrets";
+import Vibes from "./Vibes";
 import ScrollProgress from "./ScrollProgress";
 import { useMagnetic } from "../../hooks/useMagnetic";
 import "./overlays.css";
@@ -16,6 +17,7 @@ const MatrixRain = lazy(() => import("./MatrixRain"));
 const TrophyCase = lazy(() => import("./TrophyCase"));
 const ChatBot = lazy(() => import("./ChatBot"));
 const UnderTheHood = lazy(() => import("./UnderTheHood"));
+const Supreme = lazy(() => import("./Supreme"));
 
 /** Everything that floats above the page. Heavy pieces load only when opened. */
 const OverlayRoot = () => {
@@ -42,8 +44,14 @@ const OverlayRoot = () => {
       )}
 
       <Secrets />
+      <Vibes />
       <ScrollProgress />
       <Dock />
+      {xp.godMode && !xp.matrix && !xp.overlay && (
+        <button className="supreme-access" onClick={() => xp.open("supreme")} aria-label="Open Supreme control room">
+          <span aria-hidden="true">✦</span> SUPREME ACCESS
+        </button>
+      )}
       {xp.overlay !== "recruiter" && (
         <Suspense fallback={null}>
           <ChatBot />
@@ -57,6 +65,7 @@ const OverlayRoot = () => {
         {xp.overlay === "game" && <ArcadeGame />}
         {xp.overlay === "badges" && <TrophyCase />}
         {xp.overlay === "perf" && <UnderTheHood />}
+        {xp.overlay === "supreme" && xp.godMode && <Supreme />}
         {xp.projectSlug && <ProjectModal key={xp.projectSlug} slug={xp.projectSlug} />}
         {xp.matrix && <MatrixRain />}
       </Suspense>

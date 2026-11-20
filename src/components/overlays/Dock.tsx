@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { MdEmojiEvents, MdGamepad, MdPerson, MdSearch, MdTerminal, MdVolumeOff, MdVolumeUp } from "react-icons/md";
+import { MdEmojiEvents, MdGamepad, MdHeadphones, MdPerson, MdSearch, MdTerminal, MdVolumeOff, MdVolumeUp } from "react-icons/md";
 import { BADGES } from "../../data/badges";
 import { useExperience } from "../../context/ExperienceProvider";
 
 /** Floating shortcuts: recruiter view, search, terminal, arcade, sound. */
 const Dock = () => {
-  const { open, overlay, muted, toggleMuted, badges } = useExperience();
+  const { open, overlay, muted, toggleMuted, badges, lofi, toggleLofi } = useExperience();
   const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
   const mod = isMac ? "⌘" : "Ctrl";
   const [pastHero, setPastHero] = useState(false);
@@ -48,6 +48,11 @@ const Dock = () => {
         <span className="ov-sr-only">
           Open trophy case, {badges.length} of {BADGES.length} badges found
         </span>
+      </button>
+      <button className={`dock-btn${lofi ? " dock-btn-live" : ""}`} onClick={toggleLofi} aria-pressed={lofi}>
+        <MdHeadphones aria-hidden="true" />
+        <span className="dock-tip">{lofi ? "Stop lo-fi" : "Play lo-fi"}</span>
+        <span className="ov-sr-only">Chill lo-fi music</span>
       </button>
       <button className="dock-btn" onClick={toggleMuted} aria-pressed={!muted}>
         {muted ? <MdVolumeOff aria-hidden="true" /> : <MdVolumeUp aria-hidden="true" />}

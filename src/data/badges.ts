@@ -21,6 +21,7 @@ export const BADGES = [
   { id: "logo", emoji: "👆", name: "Persistent", hint: "Click the YJ logo repeatedly" },
   { id: "idle", emoji: "🧘", name: "Patient", hint: "Do nothing for a while" },
   { id: "console", emoji: "🧑‍💻", name: "Inspector", hint: "Peek behind the curtain (DevTools)" },
+  { id: "lofi", emoji: "🎧", name: "Chill Mode", hint: "Put on some music (dock)" },
   { id: "offline", emoji: "📡", name: "Offline Survivor", hint: "Visit while offline" },
 ] as const;
 

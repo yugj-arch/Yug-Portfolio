@@ -11,6 +11,7 @@ import Work from "./Work";
 import SkillsMatrix from "./SkillsMatrix";
 import setSplitText from "./utils/splitText";
 import LazyMount from "./LazyMount";
+import { TICKER } from "../data/vibes";
 
 const TechStack = lazy(() => import("./TechStack"));
 const HeroParticles = lazy(() => import("./HeroParticles"));
@@ -54,6 +55,17 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <WhatIDo />
             <Work />
             <Career />
+            <div className="vibe-ticker" aria-hidden="true">
+              <div className="vibe-ticker-track">
+                {[0, 1].map((k) => (
+                  <span key={k}>
+                    {TICKER.map((t) => (
+                      <b key={t}>{t} ✦</b>
+                    ))}
+                  </span>
+                ))}
+              </div>
+            </div>
             <SkillsMatrix />
             {isDesktopView && (
               <LazyMount

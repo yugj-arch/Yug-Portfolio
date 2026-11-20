@@ -34,7 +34,9 @@ const COMMANDS: Record<string, string> = {
   play: "Launch the arcade",
   sound: "Toggle UI sound",
   theme: "Switch accent theme (theme amber)",
-  god: "Toggle god mode (or use the Konami code)",
+  lofi: "Chill lo-fi music on/off",
+  god: "Unlock Supreme access (god off to leave)",
+  supreme: "Enter the Supreme control room",
   clear: "Clear the screen",
   exit: "Close the terminal",
 };
@@ -51,7 +53,7 @@ const WELCOME: Line[] = [
 ];
 
 const Terminal = () => {
-  const { close, open, openProject, runMatrix, confetti, sfx, toggleMuted, muted, godMode, setGodMode, unlock, setChatOpen, setTheme, setDisco } =
+  const { close, open, openProject, runMatrix, confetti, sfx, toggleMuted, muted, setGodMode, unlock, setChatOpen, setTheme, setDisco, toggleLofi } =
     useExperience();
   const [lines, setLines] = useState<Line[]>(WELCOME);
   const [value, setValue] = useState("");
@@ -187,9 +189,13 @@ const Terminal = () => {
       toggleMuted();
       return out(`Sound ${muted ? "on" : "off"}.`);
     }
-    if (cmd === "god" || cmd === "godmode") {
-      setGodMode(!godMode);
-      return out(`God mode ${godMode ? "off" : "on"}.`);
+    if (cmd === "god off" || cmd === "supreme off") {
+      setGodMode(false);
+      return out("Supreme access closed. Back to the original experience.");
+    }
+    if (cmd === "god" || cmd === "godmode" || cmd === "supreme") {
+      setGodMode(true);
+      return out("Access granted. Entering the Supreme control room…");
     }
     if (cmd === "ask" || cmd.startsWith("ask ") || cmd === "chat") {
       window.setTimeout(() => {
@@ -223,6 +229,10 @@ const Terminal = () => {
       return out("Querying api.github.com…");
     }
     if (cmd === "theme" || cmd.startsWith("theme ")) return out(setTheme(cmd.split(" ")[1]));
+    if (cmd === "lofi" || cmd === "music" || cmd === "vibes") {
+      toggleLofi();
+      return out("🎧 toggling the vibes…");
+    }
     if (cmd === "disco") {
       setDisco(true);
       return out("🪩 Staying alive…");

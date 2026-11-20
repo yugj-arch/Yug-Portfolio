@@ -3,6 +3,7 @@ import "./styles/Landing.css";
 import { MdArrowDownward, MdArrowOutward } from "react-icons/md";
 import { scrollToSection } from "../utils/scrollTo";
 import { RESUME_URL } from "../data/profile";
+import { mood } from "../data/vibes";
 
 const Landing = ({ children }: PropsWithChildren) => {
   return (
@@ -30,6 +31,7 @@ const Landing = ({ children }: PropsWithChildren) => {
           </div>
           <div className="landing-actions">
             <p>From an idea to something people use.</p>
+            <span className="vibe-mood">{mood()}</span>
             <div className="landing-action-links">
               <a className="landing-cta" href="#work" data-cursor="disable" onClick={(event) => {
                 event.preventDefault();

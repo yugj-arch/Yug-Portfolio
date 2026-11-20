@@ -15,7 +15,7 @@ import { applyTheme, THEMES, THEME_KEY, ThemeName } from "../data/themes";
 
 type Tone = Parameters<typeof playTone>[0];
 
-export type Overlay = "terminal" | "palette" | "game" | "recruiter" | "badges" | "perf" | null;
+export type Overlay = "terminal" | "palette" | "game" | "recruiter" | "badges" | "perf" | "supreme" | null;
 
 interface ExperienceType {
   overlay: Overlay;
@@ -30,6 +30,7 @@ interface ExperienceType {
   setGodMode: (on: boolean) => void;
   matrix: boolean;
   runMatrix: () => void;
+  stopMatrix: () => void;
   sfx: (tone: Tone) => void;
   confetti: () => void;
   toast: string | null;
@@ -40,6 +41,8 @@ interface ExperienceType {
   chatOpen: boolean;
   setChatOpen: (open: boolean) => void;
   noteProjectViewed: (slug: string) => void;
+  lofi: boolean;
+  toggleLofi: () => void;
   disco: boolean;
   setDisco: (on: boolean) => void;
   setTheme: (name?: string) => string;
@@ -113,6 +116,7 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
   const [chatOpen, setChatOpenState] = useState(false);
   const toastTimer = useRef<number>();
   const [disco, setDiscoState] = useState(false);
+  const [lofi, setLofi] = useState(false);
   const [badges, setBadges] = useState<BadgeId[]>(() =>
     readList<BadgeId>(STORAGE.badges).filter((id) => BADGES.some((b) => b.id === id))
   );
@@ -224,10 +228,15 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       setGodModeState(on);
       write(STORAGE.god, on ? "1" : null);
       if (on) {
-        playTone("power"); // the Konami code is a deliberate gesture: always give audio feedback
-        notify("GOD MODE on. Enter the code again to exit.");
+        setProjectSlug(null);
+        setChatOpenState(false);
+        setOverlay("supreme");
+        sfx("power");
+        notify("Supreme access granted. Your control room is ready.");
         unlock("konami");
       } else {
+        setMatrix(false);
+        setOverlay((current) => current === "supreme" ? null : current);
         sfx("close");
         notify("God mode off.");
       }
@@ -237,11 +246,36 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
 
   const runMatrix = useCallback(() => {
     unlock("matrix");
+    setOverlay(null);
+    setProjectSlug(null);
+    setChatOpenState(false);
     setMatrix(true);
-    window.setTimeout(() => setMatrix(false), 6000);
-  }, [unlock]);
+    sfx("power");
+  }, [sfx, unlock]);
+
+  const stopMatrix = useCallback(() => {
+    setMatrix(false);
+    if (godMode) setOverlay("supreme");
+    sfx("close");
+  }, [godMode, sfx]);
 
   const confetti = useCallback(() => fireConfetti(), []);
+
+  const toggleLofi = useCallback(() => {
+    import("../utils/lofi")
+      .then((m) => {
+        if (m.isLofiRunning()) {
+          m.stopLofi();
+          setLofi(false);
+        } else {
+          m.startLofi();
+          setLofi(true);
+          unlock("lofi");
+          notify("🎧 lo-fi on. Click the headphones again to stop.");
+        }
+      })
+      .catch(() => undefined);
+  }, [notify, unlock]);
 
   const setDisco = useCallback(
     (on: boolean) => {
@@ -291,9 +325,9 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
 
   // Keep the page behind overlays still.
   useEffect(() => {
-    const anyOpen = overlay !== null || projectSlug !== null;
+    const anyOpen = overlay !== null || projectSlug !== null || matrix;
     setPagePaused(anyOpen);
-  }, [overlay, projectSlug]);
+  }, [overlay, projectSlug, matrix]);
 
   useEffect(() => {
     if (!online) unlock("offline");
@@ -314,6 +348,13 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
   // Global shortcuts: Ctrl/Cmd+K palette, Ctrl+` terminal, Escape closes.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (matrix) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          stopMatrix();
+        }
+        return;
+      }
       const mod = e.ctrlKey || e.metaKey;
       if (mod && e.key.toLowerCase() === "k") {
         e.preventDefault();
@@ -335,7 +376,7 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [overlay, projectSlug, open, close, closeProject, chatOpen, setChatOpen]);
+  }, [overlay, projectSlug, open, close, closeProject, chatOpen, setChatOpen, matrix, stopMatrix]);
 
   const value = useMemo<ExperienceType>(
     () => ({
@@ -351,6 +392,7 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       setGodMode,
       matrix,
       runMatrix,
+      stopMatrix,
       sfx,
       confetti,
       toast,
@@ -365,6 +407,8 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       setDisco,
       setTheme,
       cycleTheme,
+      lofi,
+      toggleLofi,
     }),
     [
       overlay,
@@ -379,6 +423,7 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       setGodMode,
       matrix,
       runMatrix,
+      stopMatrix,
       sfx,
       confetti,
       toast,
@@ -393,6 +438,8 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       setDisco,
       setTheme,
       cycleTheme,
+      lofi,
+      toggleLofi,
     ]
   );
 
