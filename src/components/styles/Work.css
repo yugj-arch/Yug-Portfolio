@@ -22,6 +22,18 @@
 }
 
 /* ── Carousel ── */
+.carousel-position {
+  margin: 20px 0 0;
+  text-align: center;
+  color: #a8b7c8;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track { transition: none; }
+}
+
 .carousel-wrapper {
   position: relative;
   width: 100%;

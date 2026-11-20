@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { useExperience } from "../../context/ExperienceProvider";
 import { useKonami } from "../../hooks/useKonami";
 import Dock from "./Dock";
+import Secrets from "./Secrets";
 import ScrollProgress from "./ScrollProgress";
 import { useMagnetic } from "../../hooks/useMagnetic";
 import "./overlays.css";
@@ -40,6 +41,7 @@ const OverlayRoot = () => {
         </div>
       )}
 
+      <Secrets />
       <ScrollProgress />
       <Dock />
       {xp.overlay !== "recruiter" && (

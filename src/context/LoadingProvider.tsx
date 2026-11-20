@@ -24,7 +24,20 @@ export const LoadingProvider = ({ children }: PropsWithChildren) => {
     setIsLoading,
     setLoading,
   };
-  useEffect(() => {}, [loading]);
+  useEffect(() => {
+    if (!isLoading) return;
+    // Keep the portfolio accessible even when WebGL or a model request stalls.
+    const timeout = window.setTimeout(async () => {
+      try {
+        const { initialFX } = await import("../components/utils/initialFX");
+        initialFX();
+      } finally {
+        document.body.style.overflowY = "auto";
+        setIsLoading(false);
+      }
+    }, 12000);
+    return () => window.clearTimeout(timeout);
+  }, [isLoading]);
 
   return (
     <LoadingContext.Provider value={value as LoadingType}>

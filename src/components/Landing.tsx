@@ -1,27 +1,13 @@
-import { lazy, PropsWithChildren, Suspense, useState } from "react";
+import { PropsWithChildren } from "react";
 import "./styles/Landing.css";
-
-const HeroParticles = lazy(() => import("./HeroParticles"));
-
-// Desktop-class devices only: phones keep the lighter page.
-function canRunParticles() {
-  if (typeof window === "undefined") return false;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const finePointer = window.matchMedia("(pointer: fine)").matches;
-  const cores = navigator.hardwareConcurrency ?? 4;
-  return !reduced && finePointer && window.innerWidth > 1024 && cores >= 4;
-}
+import { MdArrowDownward, MdArrowOutward } from "react-icons/md";
+import { scrollToSection } from "../utils/scrollTo";
+import { RESUME_URL } from "../data/profile";
 
 const Landing = ({ children }: PropsWithChildren) => {
-  const [particles] = useState(canRunParticles);
   return (
     <>
       <div className="landing-section" id="landingDiv">
-        {particles && (
-          <Suspense fallback={null}>
-            <HeroParticles />
-          </Suspense>
-        )}
         <div className="landing-container">
           <div className="landing-intro">
             <h2>Hello! I'm</h2>
@@ -41,6 +27,20 @@ const Landing = ({ children }: PropsWithChildren) => {
               <div className="landing-h2-info">Developer</div>
               <div className="landing-h2-info-1">Engineer</div>
             </h2>
+          </div>
+          <div className="landing-actions">
+            <p>From an idea to something people use.</p>
+            <div className="landing-action-links">
+              <a className="landing-cta" href="#work" data-cursor="disable" onClick={(event) => {
+                event.preventDefault();
+                void scrollToSection("#work");
+              }}>
+                Explore my work <MdArrowDownward aria-hidden="true" />
+              </a>
+              <a className="landing-resume" href={RESUME_URL} target="_blank" rel="noopener noreferrer" data-cursor="disable">
+                View resume <MdArrowOutward aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
         {children}

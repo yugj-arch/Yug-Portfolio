@@ -46,6 +46,15 @@ a:hover {
   color: var(--accentColor);
 }
 
+:focus-visible {
+  outline: 2px solid var(--accentColor);
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { scroll-behavior: auto; }
+}
+
 main {
   opacity: 1;
   transition: 0.3s;
@@ -83,6 +92,10 @@ body {
   width: 100%;
   margin: auto;
   position: relative;
+}
+
+#smooth-wrapper {
+  z-index: 12;
 }
 
 .container1 {

@@ -139,6 +139,8 @@ export type Project = {
   points: string[];
   architecture: { layer: string; detail: string }[];
   challenges: { problem: string; solution: string }[];
+  /** Real screenshots of the live site (WebP, 1425x900). The first one is the card cover. */
+  shots?: { src: string; caption: string }[];
 };
 
 export const projects: Project[] = [
@@ -163,6 +165,10 @@ export const projects: Project[] = [
     liveLabel: "urdufreetoolkit-five.vercel.app",
     repo: "https://github.com/yugj-arch/Urdufreetoolkit",
     accent: "#5eead4",
+    shots: [
+      { src: "/images/projects/urdu-1.webp", caption: "Step 1: read Urdu from an image, choosing which OCR engines to run" },
+      { src: "/images/projects/urdu-2.webp", caption: "Step 2: transliterate to Devanagari and Roman with the offline fine-tuned model" },
+    ],
     preview: {
       headline: "اردو → उर्दू → Urdu",
       lines: ["OCR engines in parallel", "Self-trained Transformer", "Streamed over SSE"],
@@ -208,6 +214,12 @@ export const projects: Project[] = [
     live: "https://oasisrealestate.tz",
     liveLabel: "oasisrealestate.tz",
     accent: "#fbbf24",
+    shots: [
+      { src: "/images/projects/oasis-1.webp", caption: "Hero: surveyed land across Dar es Salaam and the Coastal Region, with a View All Projects call to action" },
+      { src: "/images/projects/oasis-2.webp", caption: "Developments carousel: plot sizes, per-sq-m cash prices and View Inventory buttons" },
+      { src: "/images/projects/oasis-3.webp", caption: "Core services: site visits, land sales, investment advisory and title transfer" },
+      { src: "/images/projects/oasis-4.webp", caption: "Client testimonials and a blogs & updates section" },
+    ],
     preview: {
       headline: "5 developments · 7 pages",
       lines: ["Plot sizes & per-sq-m pricing", "Inventory views", "Book Site Visit · WhatsApp"],
@@ -243,6 +255,12 @@ export const projects: Project[] = [
     live: "https://avenue.co.tz",
     liveLabel: "avenue.co.tz",
     accent: "#f472b6",
+    shots: [
+      { src: "/images/projects/avenue-1.webp", caption: "Hero: side navigation with Book A Visit and Enquire Now always in reach" },
+      { src: "/images/projects/avenue-2.webp", caption: "Nursery of the Year 2026 award and the school's philosophy" },
+      { src: "/images/projects/avenue-3.webp", caption: "Curriculum journey: Playgroup to Pre-Reception, built on the British EYFS framework" },
+      { src: "/images/projects/avenue-4.webp", caption: "Admissions enquiry form with enquiry-type selector, plus contact footer" },
+    ],
     preview: {
       headline: "Admissions, made easy",
       lines: ["7 enquiry types", "Book A Visit · Enquire Now", "Mobile WebP images"],
@@ -266,6 +284,48 @@ export const projects: Project[] = [
       {
         problem: "Admissions questions vary a lot.",
         solution: "One form handles seven enquiry types, so each enquiry reaches the school with context.",
+      },
+    ],
+  },
+  {
+    slug: "euphoric-events",
+    title: "Euphoric Events",
+    subtitle: "Luxury Event Planning Website",
+    category: "Client project · Events",
+    stack: ["Responsive Design", "Image Galleries", "WhatsApp Integration"],
+    live: "https://euphoric-events-website.vercel.app",
+    liveLabel: "euphoric-events-website.vercel.app",
+    accent: "#f472b6",
+    shots: [
+      { src: "/images/projects/euphoric-1.webp", caption: "Hero: full-bleed celebration photography with a clear call to action" },
+      { src: "/images/projects/euphoric-2.webp", caption: "Services: customised experiences for every occasion" },
+      { src: "/images/projects/euphoric-3.webp", caption: "Memories: arch-framed cards for each celebration" },
+      { src: "/images/projects/euphoric-4.webp", caption: "Featured celebrations: a collage gallery of real events" },
+    ],
+    preview: {
+      headline: "Crafting celebrations that last forever",
+      lines: ["Services & featured celebrations", "Memories gallery", "Let's Talk · WhatsApp"],
+    },
+    summary:
+      "A photography-led website for a luxury event-planning company, built to showcase real celebrations and turn visitors into enquiries.",
+    points: [
+      "Built a multi-section site covering the founder's story, services, memories and featured celebrations, with a Let's Talk contact flow.",
+      "Designed image-rich galleries (arch-framed memory cards and a collage of featured events) that stay readable on phones and desktops.",
+      "Added a persistent WhatsApp button so visitors can reach the planner from any section.",
+    ],
+    architecture: [
+      { layer: "Frontend", detail: "Responsive multi-section single-page site, deployed on Vercel" },
+      { layer: "Content", detail: "Founder story, services, memories gallery and featured celebrations" },
+      { layer: "Conversion", detail: "Let's Talk and Let's Connect calls to action plus a floating WhatsApp button" },
+    ],
+    challenges: [
+      {
+        problem: "Event planning is sold on emotion, and photos carry it.",
+        solution: "Galleries lead each section, with a warm burgundy palette and serif headings that keep the focus on the imagery.",
+      },
+      {
+        problem: "Enquiries come through different channels.",
+        solution: "A floating WhatsApp button and repeated Let's Talk buttons keep contact one tap away.",
       },
     ],
   },

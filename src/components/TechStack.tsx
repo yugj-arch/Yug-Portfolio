@@ -176,6 +176,17 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 const TechStack = () => {
   const { unlock } = useExperience();
   const [isActive, setIsActive] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Stop rendering the scene entirely while it is off screen.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: "100px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -196,7 +207,7 @@ const TechStack = () => {
         }, 1000);
       });
     });
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -217,7 +228,7 @@ const TechStack = () => {
   }, []);
 
   return (
-    <section className="techstack" id="techstack" aria-label="Technical skills, with an interactive 3D physics scene">
+    <section ref={sectionRef} className="techstack" id="techstack" aria-label="Technical skills, with an interactive 3D physics scene">
       <h2>
         Technical Skills <br />
         <span className="tech-skills-list">
@@ -229,6 +240,8 @@ const TechStack = () => {
 
       <Canvas
         shadows
+        dpr={[1, 1.5]}
+        frameloop={visible ? "always" : "never"}
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
@@ -250,7 +263,7 @@ const TechStack = () => {
           shadow-mapSize={[512, 512]}
         />
         <directionalLight position={[0, 5, -4]} intensity={2} />
-        <Physics gravity={[0, 0, 0]}>
+        <Physics gravity={[0, 0, 0]} paused={!visible}>
           <Pointer isActive={isActive} />
           {spheres.map((props, i) => (
             <SphereGeo

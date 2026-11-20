@@ -33,6 +33,7 @@ const COMMANDS: Record<string, string> = {
   matrix: "Enter the matrix",
   play: "Launch the arcade",
   sound: "Toggle UI sound",
+  theme: "Switch accent theme (theme amber)",
   god: "Toggle god mode (or use the Konami code)",
   clear: "Clear the screen",
   exit: "Close the terminal",
@@ -50,7 +51,7 @@ const WELCOME: Line[] = [
 ];
 
 const Terminal = () => {
-  const { close, open, openProject, runMatrix, confetti, sfx, toggleMuted, muted, godMode, setGodMode, unlock, setChatOpen } =
+  const { close, open, openProject, runMatrix, confetti, sfx, toggleMuted, muted, godMode, setGodMode, unlock, setChatOpen, setTheme, setDisco } =
     useExperience();
   const [lines, setLines] = useState<Line[]>(WELCOME);
   const [value, setValue] = useState("");
@@ -220,6 +221,52 @@ const Terminal = () => {
         )
         .catch(() => setLines((prev) => [...prev, { kind: "err", body: "GitHub API unreachable (offline or rate-limited)." }]));
       return out("Querying api.github.com…");
+    }
+    if (cmd === "theme" || cmd.startsWith("theme ")) return out(setTheme(cmd.split(" ")[1]));
+    if (cmd === "disco") {
+      setDisco(true);
+      return out("🪩 Staying alive…");
+    }
+    if (cmd === "coffee" || cmd === "brew" || cmd === "sudo make coffee") {
+      unlock("coffee");
+      return out("    ( (", "     ) )", "  .______.", "  |      |]", "  \\      /", "   `----'", "418: I'm a teapot, but here's a coffee.");
+    }
+    if (cmd === "rm -rf /" || cmd === "rm -rf /*" || cmd === "sudo rm -rf /") {
+      unlock("rm");
+      sfx("error");
+      document.documentElement.classList.add("ov-shake");
+      window.setTimeout(() => document.documentElement.classList.remove("ov-shake"), 700);
+      return [{ kind: "err", body: "rm: removing /… just kidding. This is a static site. Nice try 😄" }];
+    }
+    if (cmd === "vim" || cmd === "vi" || cmd === "nano" || cmd === "emacs") {
+      return out("You are now trapped. Try :q!");
+    }
+    if (cmd === ":q" || cmd === ":q!" || cmd === ":wq") return out("Escaped. Respect.");
+    if (cmd === "fortune") {
+      const f = [
+        "It works on my machine.",
+        "There are only two hard things: cache invalidation, naming, and off-by-one errors.",
+        "The best code is the code you don't have to write.",
+        "Ship it. Then fix it. Then ship it again.",
+        "git blame says it was past-you.",
+      ];
+      return out(f[Math.floor(Math.random() * f.length)]);
+    }
+    if (cmd.startsWith("cowsay")) {
+      const msg = input.slice(7) || "hire yug";
+      return out(
+        ` ${"_".repeat(msg.length + 2)}`,
+        `< ${msg} >`,
+        ` ${"-".repeat(msg.length + 2)}`,
+        "        \\   ^__^",
+        "         \\  (oo)\\_______",
+        "            (__)\\       )\\/\\",
+        "                ||----w |",
+        "                ||     ||"
+      );
+    }
+    if (cmd === "ls -la" || cmd === "ls -a") {
+      return out(".  ..  .secrets  about.md  projects/  resume.pdf", "(psst: `badges` shows hints for every hidden badge.)");
     }
     if (cmd === "date") return out(new Date().toString());
     if (cmd.startsWith("echo ")) return out(input.slice(5));

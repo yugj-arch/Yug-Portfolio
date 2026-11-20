@@ -219,6 +219,7 @@ function detectTopic(q: string): Topic | null {
   if (mentions(q, "urdu", "ocr", "transliteration", "transliterate", "devanagari", "nastaliq", "paddleocr", "easyocr", "cer/wer", "vowel"))
     return { kind: "project", slug: "urdu-toolkit" };
   if (mentions(q, "oasis", "real estate", "land sales", "tanzania")) return { kind: "project", slug: "oasis-real-estate" };
+  if (mentions(q, "euphoric", "event planning", "wedding")) return { kind: "project", slug: "euphoric-events" };
   if (mentions(q, "avenue", "preschool", "admissions")) return { kind: "project", slug: "avenue-preschool" };
   if (mentions(q, "stats.fm", "statsfm", "spotify", "stats fm", "heatmap", "8x", "hiring assignment", "assignment"))
     return { kind: "repo", name: "stats-fm-clone" };

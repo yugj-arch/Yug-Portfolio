@@ -11,6 +11,7 @@ import {
 import { playTone } from "../utils/sound";
 import { fireConfetti } from "../utils/confetti";
 import { BADGES, BadgeId } from "../data/badges";
+import { applyTheme, THEMES, THEME_KEY, ThemeName } from "../data/themes";
 
 type Tone = Parameters<typeof playTone>[0];
 
@@ -39,6 +40,10 @@ interface ExperienceType {
   chatOpen: boolean;
   setChatOpen: (open: boolean) => void;
   noteProjectViewed: (slug: string) => void;
+  disco: boolean;
+  setDisco: (on: boolean) => void;
+  setTheme: (name?: string) => string;
+  cycleTheme: () => void;
 }
 
 const ExperienceContext = createContext<ExperienceType | null>(null);
@@ -107,6 +112,7 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
   const [online, setOnline] = useState(() => navigator.onLine);
   const [chatOpen, setChatOpenState] = useState(false);
   const toastTimer = useRef<number>();
+  const [disco, setDiscoState] = useState(false);
   const [badges, setBadges] = useState<BadgeId[]>(() =>
     readList<BadgeId>(STORAGE.badges).filter((id) => BADGES.some((b) => b.id === id))
   );
@@ -237,6 +243,47 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
 
   const confetti = useCallback(() => fireConfetti(), []);
 
+  const setDisco = useCallback(
+    (on: boolean) => {
+      setDiscoState(on);
+      if (on) {
+        unlock("disco");
+        notify("🪩 Disco mode. Type it again to stop.");
+        sfx("power");
+      }
+    },
+    [notify, sfx, unlock]
+  );
+
+  const setTheme = useCallback(
+    (name?: string) => {
+      const names = Object.keys(THEMES) as ThemeName[];
+      if (!name || !names.includes(name as ThemeName)) return `Themes: ${names.join(", ")}`;
+      applyTheme(name as ThemeName);
+      write(THEME_KEY, name);
+      unlock("theme");
+      sfx("click");
+      return `Theme set to ${name}.`;
+    },
+    [sfx, unlock]
+  );
+
+  const cycleTheme = useCallback(() => {
+    const names = Object.keys(THEMES) as ThemeName[];
+    const current = (document.documentElement.dataset.theme as ThemeName) || "teal";
+    const next = names[(names.indexOf(current) + 1) % names.length];
+    notify(setTheme(next));
+  }, [notify, setTheme]);
+
+  // Restore saved theme; disco is a pure CSS class.
+  useEffect(() => {
+    const saved = read(THEME_KEY) as ThemeName | null;
+    if (saved && saved in THEMES) applyTheme(saved);
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("disco", disco);
+  }, [disco]);
+
   // Theme switch for god mode.
   useEffect(() => {
     document.documentElement.classList.toggle("god-mode", godMode);
@@ -314,6 +361,10 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       noteProjectViewed,
       chatOpen,
       setChatOpen,
+      disco,
+      setDisco,
+      setTheme,
+      cycleTheme,
     }),
     [
       overlay,
@@ -338,6 +389,10 @@ export const ExperienceProvider = ({ children }: PropsWithChildren) => {
       noteProjectViewed,
       chatOpen,
       setChatOpen,
+      disco,
+      setDisco,
+      setTheme,
+      cycleTheme,
     ]
   );
 

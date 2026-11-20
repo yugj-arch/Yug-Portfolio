@@ -36,6 +36,18 @@ const ProjectVisual = ({ project, tilt = true }: { project: Project; tilt?: bool
         <i />
         <span className="pv-url">{project.liveLabel}</span>
       </div>
+      {project.shots?.[0] ? (
+        <img
+          className="pv-shot"
+          src={project.shots[0].src}
+          alt=""
+          width={1425}
+          height={900}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ) : (
       <div className="pv-body" aria-hidden="true">
         <span className="pv-kicker">{project.subtitle}</span>
         <p className="pv-title">{project.title}</p>
@@ -48,6 +60,7 @@ const ProjectVisual = ({ project, tilt = true }: { project: Project; tilt?: bool
           ))}
         </div>
       </div>
+      )}
     </div>
   );
 };

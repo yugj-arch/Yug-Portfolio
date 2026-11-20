@@ -33,13 +33,19 @@ const Work = () => {
   }, [currentIndex, goToSlide]);
 
   return (
-    <div className="work-section" id="work">
+    <section className="work-section" id="work" aria-label="Selected projects">
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>
         </h2>
 
-        <div className="carousel-wrapper">
+        <div className="carousel-wrapper" role="region" aria-roledescription="carousel" aria-label="Project showcase" tabIndex={0} onKeyDown={(event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            if (event.key === "ArrowRight") goToNext();
+            else goToPrev();
+          }
+        }}>
           {/* Navigation Arrows */}
           <button
             className="carousel-arrow carousel-arrow-left"
@@ -63,7 +69,8 @@ const Work = () => {
           {/* Slides */}
           <div className="carousel-track-container">
             <div
-              className={`carousel-track carousel-track-${currentIndex}`}
+              className="carousel-track"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {projects.map((project, index) => (
                 <div
@@ -120,6 +127,9 @@ const Work = () => {
           </div>
 
           {/* Dot Indicators */}
+          <p className="carousel-position" aria-live="polite" aria-atomic="true">
+            {String(currentIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")} · {projects[currentIndex].title}
+          </p>
           <div className="carousel-dots">
             {projects.map((_, index) => (
               <button
@@ -128,13 +138,14 @@ const Work = () => {
                   }`}
                 onClick={() => goToSlide(index)}
                 aria-label={`Go to project ${index + 1}`}
+                aria-current={index === currentIndex ? "true" : undefined}
                 data-cursor="disable"
               />
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

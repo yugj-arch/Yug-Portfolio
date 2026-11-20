@@ -6,6 +6,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import "./styles/Navbar.css";
 import { profile } from "../data/profile";
 import { useExperience } from "../context/ExperienceProvider";
+import { scrollToSection } from "../utils/scrollTo";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 export let smoother: ScrollSmoother;
@@ -16,8 +17,7 @@ const Navbar = () => {
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
+      smooth: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1.1,
       effects: true,
       autoResize: true,
       ignoreMobileResize: true,
@@ -26,26 +26,22 @@ const Navbar = () => {
     smoother.scrollTop(0);
     smoother.paused(true);
 
-    let links = document.querySelectorAll(".header ul a[data-href]");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
-        }
-      });
-    });
-    window.addEventListener("resize", () => {
+    const onResize = () => {
       ScrollSmoother.refresh(true);
-    });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      smoother.kill();
+    };
   }, []);
   return (
     <>
       <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
+        <a href="#landingDiv" className="navbar-title" aria-label="Yug Jain, back to top" data-cursor="disable" onClick={(event) => {
+          event.preventDefault();
+          void scrollToSection("#landingDiv");
+        }}>
           YJ
         </a>
         <button
@@ -66,7 +62,12 @@ const Navbar = () => {
         >
           {profile.email}
         </a>
-        <ul>
+        <ul onClick={(event) => {
+          const link = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[data-href]");
+          if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          void scrollToSection(link.dataset.href!);
+        }}>
           <li>
             <a data-href="#about" href="#about" aria-label="About">
               <HoverLinks text="ABOUT" />

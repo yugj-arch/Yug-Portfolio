@@ -1510,3 +1510,65 @@ html.god-mode .landing-circle2 {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* ---------- Hidden features ---------- */
+
+html.disco {
+  animation: ov-disco 4s linear infinite;
+}
+@keyframes ov-disco {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+html.ov-shake body {
+  animation: ov-shake 0.7s;
+}
+@keyframes ov-shake {
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.disco,
+  html.ov-shake body {
+    animation: none;
+  }
+}
+
+/* ---------- Project screenshots ---------- */
+
+.pv-shot {
+  position: absolute;
+  inset: 34px 0 0 0;
+  width: 100%;
+  height: calc(100% - 34px);
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.pm-shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.pm-shots figure {
+  margin: 0;
+}
+.pm-shots img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1425 / 900;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--ov-line-strong);
+  background: #0b1020;
+  display: block;
+}
+.pm-shots figcaption {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--ov-muted);
+}

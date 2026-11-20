@@ -14,6 +14,13 @@ export const BADGES = [
   { id: "hire", emoji: "🤝", name: "Talent Scout", hint: "Run the one sudo command that works" },
   { id: "chaos", emoji: "🌪️", name: "Chaos Engineer", hint: "Shake the tech stack" },
   { id: "audio", emoji: "🔊", name: "Audiophile", hint: "Turn the sound on" },
+  { id: "theme", emoji: "🎨", name: "Interior Designer", hint: "Change the site theme" },
+  { id: "disco", emoji: "🪩", name: "Party Starter", hint: "Type a dance-floor word anywhere" },
+  { id: "coffee", emoji: "☕", name: "Caffeinated", hint: "Developers run on something. Tell the terminal." },
+  { id: "rm", emoji: "💣", name: "Reckless", hint: "Do the thing you should never do in a shell" },
+  { id: "logo", emoji: "👆", name: "Persistent", hint: "Click the YJ logo repeatedly" },
+  { id: "idle", emoji: "🧘", name: "Patient", hint: "Do nothing for a while" },
+  { id: "console", emoji: "🧑‍💻", name: "Inspector", hint: "Peek behind the curtain (DevTools)" },
   { id: "offline", emoji: "📡", name: "Offline Survivor", hint: "Visit while offline" },
 ] as const;
 

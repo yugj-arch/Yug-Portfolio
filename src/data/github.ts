@@ -115,7 +115,7 @@ export const repos: Repo[] = [
     facts: [
       "Shortcuts: Ctrl/Cmd + K opens the command palette; Ctrl + ` opens the terminal (try `help`, `projects`, `sudo hire yug`).",
       "Recruiter mode (button in the header, or ?mode=recruiter) shows a fast, printable one-page summary with resume download.",
-      "Cyber Runner is a 60-second mini-game that also works offline; there are 14 hidden badges to find (Trophy case in the dock).",
+      "Cyber Runner is a 60-second mini-game that also works offline; there are 21 hidden badges to find (Trophy case in the dock).",
       "A service worker lets the whole site load offline after the first visit.",
     ],
   },

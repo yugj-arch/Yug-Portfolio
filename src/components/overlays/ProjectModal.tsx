@@ -58,6 +58,20 @@ const ProjectModal = ({ slug }: { slug: string }) => {
           <ProjectVisual project={project} />
         </div>
 
+        {project.shots && project.shots.length > 0 && (
+          <section className="pm-section" aria-labelledby={`${titleId}-shots`}>
+            <h3 id={`${titleId}-shots`}>Screenshots</h3>
+            <div className="pm-shots">
+              {project.shots.map((s) => (
+                <figure key={s.src}>
+                  <img src={s.src} alt={s.caption} width={1425} height={900} loading="lazy" decoding="async" />
+                  <figcaption>{s.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="pm-section" aria-labelledby={`${titleId}-arch`}>
           <h3 id={`${titleId}-arch`}>Architecture</h3>
           <dl className="pm-arch">
