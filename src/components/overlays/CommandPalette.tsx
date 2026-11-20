@@ -76,6 +76,24 @@ const CommandPalette = () => {
 
     const actions: Item[] = [
       {
+        id: "supreme",
+        group: "Experiences",
+        label: xp.godMode ? "Open Supreme control room" : "Unlock Supreme access",
+        hint: "God mode · your own control room",
+        keywords: "god godmode supreme secret special access konami",
+        icon: <MdEmojiEvents />,
+        run: () => xp.setGodMode(true),
+      },
+      {
+        id: "matrix",
+        group: "Experiences",
+        label: "Enter the construct",
+        hint: "Interactive Matrix rain",
+        keywords: "matrix digital rain neo construct",
+        icon: <MdTerminal />,
+        run: xp.runMatrix,
+      },
+      {
         id: "recruiter",
         group: "Actions",
         label: "Recruiter view",

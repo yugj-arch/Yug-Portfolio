@@ -65,6 +65,10 @@ const MatrixRain = () => {
       }
     };
     const tick = (time: number) => {
+      if (previous && time - previous < 1000 / 30) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
       const delta = previous ? Math.min((time - previous) / 1000, 0.05) : 0;
       previous = time;
       const still = settings.current.paused || (settings.current.reduced && !settings.current.animated);
