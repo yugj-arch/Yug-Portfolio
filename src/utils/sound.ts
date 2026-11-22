@@ -1,9 +1,29 @@
-// Tiny Web Audio synth for UI feedback. No audio files, nothing plays until the
-// visitor turns sound on (browsers also block audio before a user gesture).
+// UI feedback sounds, played from small audio files in /public/sounds (see
+// /public/sounds/CREDITS.md). Nothing loads or plays until the visitor turns
+// sound on (browsers also block audio before a user gesture). Files are fetched
+// once, decoded into AudioBuffers and replayed through Web Audio, so rapid
+// clicks never stack <audio> elements.
 
 type Tone = "click" | "open" | "close" | "success" | "error" | "power" | "jump" | "hit";
 
+// Every file is normalised to a -3 dBFS peak; these gains set the mix.
+const GAIN: Record<Tone, number> = {
+  click: 0.22,
+  open: 0.28,
+  close: 0.28,
+  success: 0.3,
+  error: 0.26,
+  power: 0.3,
+  jump: 0.22,
+  hit: 0.26,
+};
+
+const TONES = Object.keys(GAIN) as Tone[];
+
 let ctx: AudioContext | null = null;
+const buffers = new Map<Tone, AudioBuffer>();
+const loading = new Map<Tone, Promise<AudioBuffer | null>>();
+let ext: "webm" | "mp3" | null = null;
 
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
@@ -16,59 +36,60 @@ function getCtx(): AudioContext | null {
   return ctx;
 }
 
-function beep(
-  ac: AudioContext,
-  freq: number,
-  start: number,
-  dur: number,
-  type: OscillatorType = "sine",
-  gain = 0.05,
-  slideTo?: number
-) {
-  const osc = ac.createOscillator();
-  const amp = ac.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ac.currentTime + start);
-  if (slideTo) {
-    osc.frequency.exponentialRampToValueAtTime(slideTo, ac.currentTime + start + dur);
+function fileExt(): "webm" | "mp3" {
+  if (!ext) {
+    const probe = typeof Audio !== "undefined" ? new Audio() : null;
+    ext = probe?.canPlayType('audio/webm; codecs="opus"') ? "webm" : "mp3";
   }
-  amp.gain.setValueAtTime(0.0001, ac.currentTime + start);
-  amp.gain.exponentialRampToValueAtTime(gain, ac.currentTime + start + 0.01);
-  amp.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + start + dur);
-  osc.connect(amp).connect(ac.destination);
-  osc.start(ac.currentTime + start);
-  osc.stop(ac.currentTime + start + dur + 0.02);
+  return ext;
+}
+
+function load(ac: AudioContext, tone: Tone): Promise<AudioBuffer | null> {
+  const pending = loading.get(tone);
+  if (pending) return pending;
+  const p = fetch(`/sounds/${tone}.${fileExt()}`)
+    .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
+    .then((data) => ac.decodeAudioData(data))
+    .then((buf) => {
+      buffers.set(tone, buf);
+      return buf;
+    })
+    .catch(() => {
+      loading.delete(tone); // allow a retry on the next call
+      return null;
+    });
+  loading.set(tone, p);
+  return p;
+}
+
+function start(ac: AudioContext, buf: AudioBuffer, tone: Tone) {
+  const src = ac.createBufferSource();
+  const amp = ac.createGain();
+  src.buffer = buf;
+  amp.gain.value = GAIN[tone];
+  src.connect(amp).connect(ac.destination);
+  src.start();
+}
+
+/** Fetch and decode every cue so the first plays without delay. */
+export function preloadSounds() {
+  const ac = getCtx();
+  if (!ac) return;
+  TONES.forEach((t) => void load(ac, t));
 }
 
 export function playTone(tone: Tone) {
   const ac = getCtx();
   if (!ac) return;
-  switch (tone) {
-    case "click":
-      beep(ac, 880, 0, 0.05, "triangle", 0.03);
-      break;
-    case "open":
-      beep(ac, 440, 0, 0.12, "sine", 0.04, 880);
-      break;
-    case "close":
-      beep(ac, 660, 0, 0.12, "sine", 0.04, 330);
-      break;
-    case "success":
-      [523, 659, 784, 1047].forEach((f, i) => beep(ac, f, i * 0.08, 0.18, "triangle", 0.05));
-      break;
-    case "error":
-      beep(ac, 180, 0, 0.18, "square", 0.03);
-      break;
-    case "power":
-      [262, 330, 392, 523, 659, 784].forEach((f, i) =>
-        beep(ac, f, i * 0.07, 0.15, "square", 0.03)
-      );
-      break;
-    case "jump":
-      beep(ac, 300, 0, 0.12, "square", 0.025, 600);
-      break;
-    case "hit":
-      beep(ac, 200, 0, 0.3, "sawtooth", 0.04, 60);
-      break;
+  const buf = buffers.get(tone);
+  if (buf) {
+    start(ac, buf, tone);
+    return;
   }
+  // First use: load everything, and play this cue if it arrives promptly.
+  const asked = performance.now();
+  preloadSounds();
+  void load(ac, tone).then((b) => {
+    if (b && performance.now() - asked < 400) start(ac, b, tone);
+  });
 }
